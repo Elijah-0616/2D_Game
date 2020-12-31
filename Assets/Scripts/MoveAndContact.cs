@@ -22,9 +22,9 @@ public class MoveAndContact : MonoBehaviour
     public bool moveOnOff = true;
 
     private GameController _gameController;
-    
+
     private void Start()
-    {        
+    {
         rb = GetComponent<Rigidbody2D>();
         var gameControllerObject = GameObject.FindWithTag("MainCamera");
         if (gameControllerObject != null)
@@ -35,34 +35,33 @@ public class MoveAndContact : MonoBehaviour
         {
             print("Can't find 'GameController' script.");
         }
-        
     }
 
     private void Update()
+    {
+        if (moveOnOff)
         {
-            if (moveOnOff)
-            {
-                 rb.MovePosition(rb.position + Vector2.up * (speed * Time.deltaTime));
-            }
+            rb.MovePosition(rb.position + Vector2.up * (speed * Time.deltaTime));
         }
-    
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
+    {
+        // print("OnTriggerEnter调用");
+        if (other.CompareTag("Target"))
         {
-        print("OnTriggerEnter调用");
-            if (other.CompareTag("Target"))
-        {
-        Debug.Log("if语句调用");
-        moveOnOff = false;
-        transform.SetParent(other.gameObject.transform);
-         _gameController.GetNumber(); //调用GetNumber()方法，减少目标数量
+            // Debug.Log("if语句调用");
+            moveOnOff = false;
+            transform.SetParent(other.gameObject.transform);
+            _gameController.GetNumber(); //调用GetNumber()方法，减少目标数量
         }
-    
+
         //结束游戏
         if (other.CompareTag("Player"))
         {
-            print("OverGame执行");
-            moveOnOff = false; 
+            // print("OverGame执行");
+            moveOnOff = false;
             _gameController.OverGame();
         }
-        }
+    }
 }
