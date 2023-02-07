@@ -3,7 +3,7 @@
 public class Spin : MonoBehaviour
 {
     public Rigidbody2D rb;
-    public float speed = 100;
+    public static float speed = 80;
     private GameController _gameController;
 
     private void Start()

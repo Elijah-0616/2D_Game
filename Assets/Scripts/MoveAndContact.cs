@@ -18,7 +18,7 @@ public class MoveAndContact : MonoBehaviour
     public Rigidbody2D rb;
 
     //定义针发射速度
-    public float speed = 50;
+    public static float speed = 130;
     public bool moveOnOff = true;
 
     private GameController _gameController;
@@ -41,27 +41,27 @@ public class MoveAndContact : MonoBehaviour
     {
         if (moveOnOff)
         {
+            print("moving");
             rb.MovePosition(rb.position + Vector2.up * (speed * Time.deltaTime));
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // print("OnTriggerEnter调用");
+        print("碰撞");
         if (other.CompareTag("Target"))
-        {
-            // Debug.Log("if语句调用");
+        {            
+            print("碰撞到目标");
             moveOnOff = false;
             transform.SetParent(other.gameObject.transform);
             _gameController.GetNumber(); //调用GetNumber()方法，减少目标数量
         }
 
         //结束游戏
-        if (other.CompareTag("Player"))
-        {
-            // print("OverGame执行");
-            moveOnOff = false;
-            _gameController.OverGame();
-        }
+        if (!other.CompareTag("Player")) return;
+        print("GAME OVER");
+        // print("OverGame执行");
+        moveOnOff = false;
+        _gameController.OverGame();
     }
 }
